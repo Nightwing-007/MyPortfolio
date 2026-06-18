@@ -59,11 +59,11 @@
 
 .dark {
   /* Override Tailwind @theme tokens */
-  --color-bg-base: #000000;
-  --color-bg-card: #000000;
-  --color-bg-elevated: #0a0a0a;
+  --color-bg-base: #0e0e0e;
+  --color-bg-card: #0e0e0e;
+  --color-bg-elevated: #151515;
   --color-neu-dark: #000000;
-  --color-neu-light: #161616;
+  --color-neu-light: #1e1e1e;
   --color-cyan-accent: #00B8FF;
   --color-glow-purple: #8B5CF6;
   --color-glow-green: #00FA9A;
@@ -72,23 +72,23 @@
   --color-text-dim: #525252;
 
   /* Override custom utility vars */
-  --neu-bg: #000000;
+  --neu-bg: #0e0e0e;
   --neu-dark: #000000;
-  --neu-light: #161616;
-  --neu-concave-from: #000000;
-  --neu-concave-to: #121212;
-  --glass-bg: rgba(255, 255, 255, 0.02);
-  --glass-bg-strong: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.07);
-  --glass-border-strong: rgba(255, 255, 255, 0.12);
-  --glass-card-from: rgba(255, 255, 255, 0.04);
-  --glass-card-to: rgba(255, 255, 255, 0.01);
+  --neu-light: #1e1e1e;
+  --neu-concave-from: #080808;
+  --neu-concave-to: #1a1a1a;
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-strong: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-strong: rgba(255, 255, 255, 0.15);
+  --glass-card-from: rgba(255, 255, 255, 0.05);
+  --glass-card-to: rgba(255, 255, 255, 0.02);
   --glass-card-shadow: rgba(0, 0, 0, 0.8);
-  --glass-card-inset: rgba(255, 255, 255, 0.05);
-  --grid-line: rgba(255, 255, 255, 0.04);
+  --glass-card-inset: rgba(255, 255, 255, 0.07);
+  --grid-line: rgba(255, 255, 255, 0.06);
   --selection-bg: rgba(139, 92, 246, 0.40);
-  --scrollbar-track: #000000;
-  --overlay-bg: rgba(0, 0, 0, 0.95);
+  --scrollbar-track: #0e0e0e;
+  --overlay-bg: rgba(10, 10, 10, 0.95);
   --hamburger-color: #ffffff;
   --accent-cyan: #00B8FF;
   --accent-purple: #8B5CF6;

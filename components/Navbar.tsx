@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSun, FaMoon } from "react-icons/fa";
+import { FaSun, FaMoon, FaGithub, FaLinkedin } from "react-icons/fa";
 import { useTheme } from "./ThemeProvider";
 
 const navLinks = [
@@ -88,12 +88,38 @@ export default function Navbar() {
               );
             })}
 
+            {/* Social Icons */}
+            <motion.a
+              href="https://github.com/Nightwing-007"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="ml-4 w-10 h-10 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors"
+              data-cursor
+              aria-label="GitHub"
+            >
+              <FaGithub className="text-sm" />
+            </motion.a>
+            <motion.a
+              href="https://www.linkedin.com/in/deepakraj-s-76392a314/"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="w-10 h-10 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors"
+              data-cursor
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin className="text-sm" />
+            </motion.a>
+
             {/* Theme Toggle */}
             <motion.button
               onClick={toggleTheme}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="ml-4 w-10 h-10 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors relative overflow-hidden"
+              className="w-10 h-10 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors relative overflow-hidden"
               data-cursor
               aria-label="Toggle theme"
             >
@@ -205,6 +231,35 @@ export default function Navbar() {
                 </motion.a>
               ))}
             </nav>
+
+            {/* Social icons in mobile overlay */}
+            <motion.div
+              className="flex items-center gap-4 mt-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.35 }}
+            >
+              <a
+                href="https://github.com/Nightwing-007"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors"
+                onClick={() => setIsOpen(false)}
+                aria-label="GitHub profile"
+              >
+                <FaGithub className="text-base" />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/deepakraj-s-76392a314/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-11 h-11 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors"
+                onClick={() => setIsOpen(false)}
+                aria-label="LinkedIn profile"
+              >
+                <FaLinkedin className="text-base" />
+              </a>
+            </motion.div>
 
             <motion.div
               className="absolute bottom-12 text-text-dim text-xs font-mono tracking-widest uppercase"

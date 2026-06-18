@@ -33,7 +33,7 @@ export default function ParticleField() {
 
     const resize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = document.documentElement.scrollHeight;
+      canvas.height = window.innerHeight;
       initParticles();
     };
 

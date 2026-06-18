@@ -98,6 +98,7 @@ export default function Hero() {
             whileTap={{ scale: 0.97 }}
             data-cursor
             className="relative px-8 py-4 font-bold text-sm sm:text-base rounded-2xl overflow-hidden group uppercase tracking-wider neu-raised"
+            aria-label="View projects section"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-cyan-accent to-glow-purple opacity-90 group-hover:opacity-100 transition-opacity rounded-2xl" />
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
@@ -116,8 +117,26 @@ export default function Hero() {
             whileTap={{ scale: 0.97 }}
             data-cursor
             className="px-8 py-4 font-bold text-sm sm:text-base rounded-2xl neu-flat text-text-primary uppercase tracking-wider hover:text-glow-purple transition-colors duration-300"
+            aria-label="Go to contact section"
           >
             Get In Touch
+          </motion.a>
+
+          {/* Download Resume — same style as secondary */}
+          <motion.a
+            href="https://drive.google.com/file/d/1jPLuRIqS7-X5sRIf3RXcq5lx0aDcIWR9/view?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            data-cursor
+            className="px-8 py-4 font-bold text-sm sm:text-base rounded-2xl neu-flat text-text-primary uppercase tracking-wider hover:text-glow-purple transition-colors duration-300 flex items-center gap-2"
+            aria-label="Download resume PDF"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download Resume
           </motion.a>
         </motion.div>
       </motion.div>

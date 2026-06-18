@@ -20,7 +20,32 @@ const firaCode = Fira_Code({
 export const metadata: Metadata = {
   title: "Deepakraj S — Portfolio",
   description:
-    "Computer Science student & Full-Stack Developer. Explore projects in computer vision, full-stack development, and more.",
+    "Computer Science student & Full-Stack Developer. Explore projects in full-stack development, computer vision, and more.",
+  keywords: [
+    "Deepakraj S",
+    "Full-Stack Developer",
+    "React",
+    "Spring Boot",
+    "MERN Stack",
+    "Portfolio",
+    "Computer Science",
+    "Sri Eshwar College",
+  ],
+  robots: "index, follow",
+  openGraph: {
+    title: "Deepakraj S — Portfolio",
+    description:
+      "Computer Science student & Full-Stack Developer building performant systems with React, Spring Boot, and the MERN stack.",
+    type: "website",
+    locale: "en_US",
+    siteName: "Deepakraj S Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Deepakraj S — Portfolio",
+    description:
+      "Full-Stack Developer | CS @ Sri Eshwar | Class of 2028",
+  },
 };
 
 export default function RootLayout({

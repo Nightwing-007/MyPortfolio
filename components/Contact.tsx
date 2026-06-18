@@ -1,14 +1,17 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FaEnvelope,
   FaPhone,
   FaGithub,
+  FaLinkedin,
   FaCode,
   FaChevronUp,
+  FaTrophy,
 } from "react-icons/fa";
-import { SiLeetcode } from "react-icons/si";
+import { SiLeetcode, SiGeeksforgeeks, SiHackerrank } from "react-icons/si";
 import GlitchText from "./GlitchText";
 import MorphingBlob from "./MorphingBlob";
 import RevealOnScroll from "./RevealOnScroll";
@@ -59,6 +62,8 @@ function StatCard({
   platform,
   count,
   total,
+  loading = false,
+  href,
   delay = 0,
 }: {
   icon: React.ComponentType<{ className?: string }>;
@@ -66,16 +71,22 @@ function StatCard({
   platform: string;
   count: number;
   total: number;
+  loading?: boolean;
+  href: string;
   delay?: number;
 }) {
   const pct = Math.min((count / total) * 100, 100);
 
   return (
     <RevealOnScroll mode="fade-up" delay={delay}>
-      <motion.div
+      <motion.a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
         whileHover={{ scale: 1.02, y: -4 }}
-        className="neu-raised p-5 sm:p-6 group transition-all duration-300"
+        className="neu-raised p-5 sm:p-6 group transition-all duration-300 block"
         data-cursor
+        aria-label={`${platform} coding profile`}
       >
         <div className="flex items-center gap-3 mb-4">
           <span style={{ color: iconColor }} className="text-xl inline-flex">
@@ -83,7 +94,17 @@ function StatCard({
           </span>
           <div>
             <p className="text-text-primary font-bold text-sm">{platform}</p>
-            <p className="text-text-muted text-xs">{count} solved</p>
+            {loading ? (
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="w-3 h-3 rounded-full border-2 border-t-transparent"
+                  style={{ borderColor: `${iconColor} transparent ${iconColor} ${iconColor}`, animation: "spin-slow 1s linear infinite" }}
+                />
+                <p className="text-text-dim text-xs font-mono">Loading...</p>
+              </div>
+            ) : (
+              <p className="text-text-muted text-xs">{count} solved</p>
+            )}
           </div>
         </div>
 
@@ -98,12 +119,35 @@ function StatCard({
             transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
           />
         </div>
-      </motion.div>
+      </motion.a>
     </RevealOnScroll>
   );
 }
 
 export default function Contact() {
+  const [leetcodeCount, setLeetcodeCount] = useState(219);
+  const [gfgCount, setGfgCount] = useState(100);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch("/api/stats");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.leetcode) setLeetcodeCount(data.leetcode);
+          if (data.gfg) setGfgCount(data.gfg);
+        }
+      } catch {
+        // Fallback values already set as defaults
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   return (
     <section
       id="contact"
@@ -162,25 +206,64 @@ export default function Contact() {
             external
             delay={0.2}
           />
+          <ContactCard
+            href="https://www.linkedin.com/in/deepakraj-s-76392a314/"
+            icon={FaLinkedin}
+            iconColor="#0A66C2"
+            label="linkedin.com/in/deepakraj-s"
+            external
+            delay={0.25}
+          />
         </div>
 
-        {/* Stats */}
+        {/* Coding Profiles */}
+        <RevealOnScroll mode="fade-up" delay={0.2}>
+          <GlitchText
+            text="Coding Profiles"
+            className="text-2xl sm:text-3xl font-semibold text-text-primary mb-6"
+          />
+        </RevealOnScroll>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-16">
           <StatCard
             icon={SiLeetcode}
             iconColor="#FFA116"
             platform="LeetCode"
-            count={219}
+            count={leetcodeCount}
             total={500}
+            loading={loading}
+            href="https://leetcode.com/u/S_Deepakraj/"
             delay={0.25}
           />
           <StatCard
-            icon={FaCode}
+            icon={SiGeeksforgeeks}
+            iconColor="#2F8D46"
+            platform="GeeksforGeeks"
+            count={gfgCount}
+            total={300}
+            loading={loading}
+            href="https://www.geeksforgeeks.org/profile/deepakraj_s"
+            delay={0.3}
+          />
+          <StatCard
+            icon={SiHackerrank}
+            iconColor="#00EA64"
+            platform="HackerRank"
+            count={50}
+            total={200}
+            loading={false}
+            href="https://www.hackerrank.com/profile/deepakraj_s20241"
+            delay={0.35}
+          />
+          <StatCard
+            icon={FaTrophy}
             iconColor="#10B981"
             platform="Skillrack"
             count={1279}
             total={2000}
-            delay={0.3}
+            loading={false}
+            href="https://www.skillrack.com/faces/resume.xhtml?id=514892&key=8b7f1a5fb7aa85472035223a779bcf00b15fad53"
+            delay={0.4}
           />
         </div>
 

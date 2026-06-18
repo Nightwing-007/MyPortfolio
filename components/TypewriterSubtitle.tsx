@@ -3,9 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 
 const SUBTITLES = [
-  "Computer Science Student & Full-Stack Developer",
+  "Full-Stack Developer & Problem Solver",
   "Building the Future with Code",
   "CS @ Sri Eshwar | Class of 2028",
+  "MERN • Spring Boot • React",
 ];
 
 export default function TypewriterSubtitle() {

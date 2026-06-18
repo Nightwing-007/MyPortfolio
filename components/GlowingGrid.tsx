@@ -64,6 +64,13 @@ export default function GlowingGrid() {
       window.addEventListener("mousemove", handleMouse);
     }
 
+    // Cache grid-line color and update on theme change
+    let gridLineColor = getComputedStyle(document.documentElement).getPropertyValue('--grid-line').trim() || "rgba(0, 0, 0, 0.03)";
+    const observer = new MutationObserver(() => {
+      gridLineColor = getComputedStyle(document.documentElement).getPropertyValue('--grid-line').trim() || "rgba(0, 0, 0, 0.03)";
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
     const draw = () => {
       timeRef.current += 0.005;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -102,8 +109,7 @@ export default function GlowingGrid() {
         }
       }
 
-      // Base grid — theme-adaptive lines
-      const gridLineColor = getComputedStyle(document.documentElement).getPropertyValue('--grid-line').trim() || "rgba(0, 0, 0, 0.03)";
+      // Base grid — theme-adaptive lines (color cached, updated via MutationObserver)
       ctx.strokeStyle = gridLineColor;
       ctx.lineWidth = 0.5;
       for (let x = 0; x <= canvas.width; x += CELL_SIZE) {
@@ -128,6 +134,7 @@ export default function GlowingGrid() {
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouse);
       cancelAnimationFrame(animFrameRef.current);
+      observer.disconnect();
     };
   }, [initCells, isMobile]);
 

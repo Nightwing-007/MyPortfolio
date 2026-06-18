@@ -42,7 +42,7 @@ export default function AnimatedBorder({
   return (
     <div
       ref={containerRef}
-      className={`relative group ${className}`}
+      className={`relative group flex flex-col ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{ padding: borderWidth }}
@@ -69,7 +69,7 @@ export default function AnimatedBorder({
 
       {/* Inner content */}
       <div
-        className="relative rounded-2xl"
+        className="relative rounded-2xl flex-1"
         style={{
           background: "var(--neu-bg)",
           borderRadius: "inherit",

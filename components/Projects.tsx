@@ -10,36 +10,81 @@ import {
 import GlitchText from "./GlitchText";
 import AnimatedBorder from "./AnimatedBorder";
 import RevealOnScroll from "./RevealOnScroll";
-import { FaTerminal, FaAws } from "react-icons/fa";
+import { FaTerminal, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import {
-  SiPython,
-  SiOpencv,
   SiReact,
   SiNodedotjs,
   SiExpress,
   SiMongodb,
+  SiSpringboot,
+  SiPostgresql,
+  SiVite,
 } from "react-icons/si";
 
 const techIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  Python: SiPython,
-  OpenCV: SiOpencv,
-  "React Native": SiReact,
+  "React (Vite)": SiReact,
+  React: SiReact,
   "Node.js": SiNodedotjs,
-  "Express.js": SiExpress,
+  Express: SiExpress,
   MongoDB: SiMongodb,
-  "AWS EC2": FaAws,
+  "Spring Boot": SiSpringboot,
+  PostgreSQL: SiPostgresql,
+  Vite: SiVite,
 };
 
-const projects = [
+interface Project {
+  title: string;
+  tech: string[];
+  desc: string;
+  note?: string;
+  live?: string;
+  repos: { label: string; url: string }[];
+}
+
+const projects: Project[] = [
   {
-    title: "Real-Time Face Detection & Locating System",
-    tech: ["Python", "OpenCV", "DeepFace"],
-    desc: "A computer vision system for real-time face detection, recognition, and automated tracking for security applications.",
+    title: "Crave Food Blog",
+    tech: ["React (Vite)", "Spring Boot", "PostgreSQL"],
+    desc: "A full-stack food blog handling complex relational data. Deployed via Vercel (frontend), Render (backend), and Neon (database).",
+    live: "https://crave-woad.vercel.app/",
+    repos: [
+      {
+        label: "Repo",
+        url: "https://github.com/Nightwing-007/Crave-FoodBlog",
+      },
+    ],
   },
   {
-    title: "Smart Tourist Safety Monitoring Platform",
-    tech: ["React Native", "Node.js", "Express.js", "MongoDB", "AWS EC2"],
-    desc: "A full-stack mobile application to monitor tourist safety incidents in real-time, deployed on scalable AWS infrastructure.",
+    title: "MERN Food Blog",
+    tech: ["React", "Node.js", "Express", "MongoDB"],
+    desc: "A full-stack food blogging platform built with the MERN stack, featuring CRUD operations, responsive design, and cloud deployment.",
+    note: "Backend spins down during inactivity",
+    live: "https://mern-food-blog-frontend.vercel.app/",
+    repos: [
+      {
+        label: "Frontend",
+        url: "https://github.com/Nightwing-007/MERN-Food-Blog-Frontend",
+      },
+      {
+        label: "Backend",
+        url: "https://github.com/Nightwing-007/MERN-Food-Blog-Backend",
+      },
+    ],
+  },
+];
+
+const notableMentions = [
+  {
+    title: "Flood Risk Prediction",
+    url: "https://github.com/Nightwing-007/Flood-Risk-Prediction-Model",
+  },
+  {
+    title: "Leetcode Wrapped",
+    url: "https://github.com/Nightwing-007/Leetcode_Wrapped",
+  },
+  {
+    title: "Complaint Management System",
+    url: "https://github.com/Nightwing-007/Complaint-Management-and-Resolution-Tracking-System",
   },
 ];
 
@@ -47,7 +92,7 @@ function ProjectCard({
   project,
   index,
 }: {
-  project: (typeof projects)[0];
+  project: Project;
   index: number;
 }) {
   const mouseX = useMotionValue(0);
@@ -109,14 +154,47 @@ function ProjectCard({
               <div className="w-11 h-11 rounded-xl neu-concave flex items-center justify-center">
                 <FaTerminal className="text-cyan-accent text-sm" />
               </div>
-              <span className="text-5xl sm:text-6xl font-bold text-glow-purple/[0.08] select-none leading-none">
-                0{index + 1}
-              </span>
+              <div className="flex items-center gap-2">
+                {/* Clickable icons for Live and Repos */}
+                {project.live && (
+                  <a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-cyan-accent transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label="Live demo"
+                    data-cursor
+                  >
+                    <FaExternalLinkAlt className="text-xs" />
+                  </a>
+                )}
+                {project.repos.map((repo) => (
+                  <a
+                    key={repo.url}
+                    href={repo.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                    aria-label={`${repo.label} repository`}
+                    title={repo.label}
+                    data-cursor
+                  >
+                    <FaGithub className="text-xs" />
+                  </a>
+                ))}
+              </div>
             </div>
 
             {/* Title */}
             <h3 className="text-xl sm:text-2xl font-bold text-text-primary mb-3 group-hover:text-glow-purple transition-colors duration-300">
               {project.title}
+              {project.note && (
+                <span className="block text-xs font-mono text-text-dim mt-1 font-normal">
+                  ({project.note})
+                </span>
+              )}
             </h3>
 
             {/* Tech badges — neumorphic inset pills */}
@@ -173,6 +251,43 @@ export default function Projects() {
             <ProjectCard key={index} project={project} index={index} />
           ))}
         </div>
+
+        {/* Notable Mentions */}
+        <RevealOnScroll mode="fade-up" delay={0.3}>
+          <div className="mt-16">
+            <GlitchText
+              text="Notable Mentions"
+              className="text-2xl sm:text-3xl font-semibold text-text-primary mb-8"
+            />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+              {notableMentions.map((mention, idx) => (
+                <RevealOnScroll key={idx} mode="scale-in" delay={idx * 0.1}>
+                  <motion.a
+                    href={mention.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02, y: -4 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="neu-raised p-5 sm:p-6 flex items-center gap-4 group transition-all duration-300 block"
+                    data-cursor
+                  >
+                    <div className="w-10 h-10 rounded-xl neu-concave flex items-center justify-center flex-shrink-0">
+                      <FaGithub className="text-text-muted text-sm group-hover:text-glow-purple transition-colors" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-text-primary font-bold text-sm group-hover:text-glow-purple transition-colors truncate">
+                        {mention.title}
+                      </p>
+                      <p className="text-text-dim text-xs font-mono mt-0.5">
+                        View on GitHub →
+                      </p>
+                    </div>
+                  </motion.a>
+                </RevealOnScroll>
+              ))}
+            </div>
+          </div>
+        </RevealOnScroll>
       </div>
     </section>
   );
