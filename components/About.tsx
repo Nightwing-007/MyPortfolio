@@ -4,80 +4,9 @@ import { motion } from "framer-motion";
 import GlitchText from "./GlitchText";
 import AnimatedBorder from "./AnimatedBorder";
 import RevealOnScroll from "./RevealOnScroll";
-import { FaBriefcase, FaGraduationCap, FaCode } from "react-icons/fa";
-import {
-  SiC,
-  SiCplusplus,
-  SiJavascript,
-  SiPython,
-  SiReact,
-  SiNodedotjs,
-  SiTailwindcss,
-  SiMongodb,
-  SiPostgresql,
-  SiSpringboot,
-  SiOpencv,
-  SiMysql,
-  SiVite,
-  SiHtml5,
-  SiCss,
-} from "react-icons/si";
-import { FaJava } from "react-icons/fa";
+import { FaBriefcase, FaGraduationCap } from "react-icons/fa";
+import { skillCategories, allSkills, experiences } from "@/lib/data";
 
-const skillCategories = [
-  {
-    label: "Frontend",
-    skills: [
-      { name: "ReactJS", icon: SiReact, color: "#61DAFB" },
-      { name: "Vite", icon: SiVite, color: "#646CFF" },
-      { name: "HTML", icon: SiHtml5, color: "#E34F26" },
-      { name: "CSS", icon: SiCss, color: "#1572B6" },
-      { name: "TailwindCSS", icon: SiTailwindcss, color: "#06B6D4" },
-      { name: "JavaScript", icon: SiJavascript, color: "#F7DF1E" },
-    ],
-  },
-  {
-    label: "Backend & DBs",
-    skills: [
-      { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
-      { name: "Spring Boot", icon: SiSpringboot, color: "#6DB33F" },
-      { name: "Java", icon: FaJava, color: "#ED8B00" },
-      { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
-      { name: "MongoDB", icon: SiMongodb, color: "#00ED64" },
-      { name: "MySQL", icon: SiMysql, color: "#00758F" },
-    ],
-  },
-  {
-    label: "AI & Core CS",
-    skills: [
-      { name: "Python", icon: SiPython, color: "#FFD43B" },
-      { name: "OpenCV", icon: SiOpencv, color: "#5C3EE8" },
-      { name: "C", icon: SiC, color: "#A8B9CC" },
-      { name: "C++", icon: SiCplusplus, color: "#00599C" },
-      { name: "DSA", icon: FaCode, color: "#FF6B6B" },
-    ],
-  },
-];
-
-// Flatten for marquee
-const allSkills = skillCategories.flatMap((cat) => cat.skills);
-
-const experiences = [
-  {
-    title: "Java Springboot Intern",
-    company: "May 2025 — June 2025",
-    description:
-      "Developed full-stack web applications using React frontend with Spring Boot backend, implementing CSRF protection and PostgreSQL database integration.",
-    tech: ["React", "Spring Boot", "CSRF", "PostgreSQL"],
-  },
-  {
-    title: "MERN Stack Intern",
-    company: "AlgoTutor — 2025",
-    description:
-      "Built full-stack applications with REST APIs, authentication, CORS handling, and MongoDB database integration.",
-    tech: ["React", "Node.js", "REST APIs", "CORS", "MongoDB"],
-  },
-];
 
 export default function About() {
   return (

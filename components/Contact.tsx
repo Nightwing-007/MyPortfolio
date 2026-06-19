@@ -1,20 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   FaEnvelope,
   FaPhone,
   FaGithub,
   FaLinkedin,
-  FaCode,
   FaChevronUp,
   FaTrophy,
+  FaPaperPlane,
 } from "react-icons/fa";
 import { SiLeetcode, SiGeeksforgeeks, SiHackerrank } from "react-icons/si";
 import GlitchText from "./GlitchText";
 import MorphingBlob from "./MorphingBlob";
 import RevealOnScroll from "./RevealOnScroll";
+import { useCodingStats } from "@/hooks/useCodingStats";
 
 function ContactCard({
   href,
@@ -41,6 +42,7 @@ function ContactCard({
         whileTap={{ scale: 0.98 }}
         className="neu-raised p-5 sm:p-6 flex items-center gap-4 group transition-all duration-300 block"
         data-cursor
+        aria-label={label}
       >
         {/* Icon — concave container */}
         <div className="w-12 h-12 rounded-xl neu-concave flex items-center justify-center flex-shrink-0">
@@ -124,29 +126,159 @@ function StatCard({
   );
 }
 
-export default function Contact() {
-  const [leetcodeCount, setLeetcodeCount] = useState(219);
-  const [gfgCount, setGfgCount] = useState(100);
-  const [loading, setLoading] = useState(true);
+function ContactForm() {
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await fetch("/api/stats");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.leetcode) setLeetcodeCount(data.leetcode);
-          if (data.gfg) setGfgCount(data.gfg);
-        }
-      } catch {
-        // Fallback values already set as defaults
-      } finally {
-        setLoading(false);
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const res = await fetch(form.action, {
+        method: "POST",
+        body: formData,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        form.reset();
       }
-    };
+    } catch {
+      // Silently fail — Formspree handles validation
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
-    fetchStats();
-  }, []);
+  if (submitted) {
+    return (
+      <RevealOnScroll mode="scale-in">
+        <div className="neu-raised p-8 sm:p-10 text-center">
+          <div className="w-16 h-16 rounded-full neu-concave flex items-center justify-center mx-auto mb-4">
+            <FaPaperPlane className="text-glow-green text-xl" />
+          </div>
+          <h4 className="text-xl font-bold text-text-primary mb-2">
+            Message Sent!
+          </h4>
+          <p className="text-text-muted text-sm">
+            Thanks for reaching out. I&apos;ll get back to you soon.
+          </p>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setSubmitted(false)}
+            className="mt-6 px-6 py-2 text-sm font-mono text-glow-purple neu-pill uppercase tracking-wider hover:text-text-primary transition-colors"
+            data-cursor
+          >
+            Send Another
+          </motion.button>
+        </div>
+      </RevealOnScroll>
+    );
+  }
+
+  return (
+    <RevealOnScroll mode="fade-up" delay={0.15}>
+      <form
+        action="https://formspree.io/f/YOUR_FORM_ID"
+        method="POST"
+        onSubmit={handleSubmit}
+        className="neu-raised p-6 sm:p-8 flex flex-col gap-5"
+      >
+        <h3 className="text-lg font-bold text-text-primary mb-1">
+          Send a Message
+        </h3>
+
+        {/* Name */}
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="contact-name"
+            className="text-text-muted text-xs font-mono uppercase tracking-wider"
+          >
+            Name
+          </label>
+          <input
+            id="contact-name"
+            type="text"
+            name="name"
+            required
+            placeholder="Your name"
+            className="w-full px-4 py-3 text-sm text-text-primary placeholder:text-text-dim bg-transparent neu-inset !rounded-xl outline-none focus:ring-1 focus:ring-glow-purple/40 transition-shadow font-medium"
+          />
+        </div>
+
+        {/* Email */}
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="contact-email"
+            className="text-text-muted text-xs font-mono uppercase tracking-wider"
+          >
+            Email
+          </label>
+          <input
+            id="contact-email"
+            type="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            className="w-full px-4 py-3 text-sm text-text-primary placeholder:text-text-dim bg-transparent neu-inset !rounded-xl outline-none focus:ring-1 focus:ring-glow-purple/40 transition-shadow font-medium"
+          />
+        </div>
+
+        {/* Message */}
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="contact-message"
+            className="text-text-muted text-xs font-mono uppercase tracking-wider"
+          >
+            Message
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            required
+            rows={4}
+            placeholder="Tell me about your project or just say hello..."
+            className="w-full px-4 py-3 text-sm text-text-primary placeholder:text-text-dim bg-transparent neu-inset !rounded-xl outline-none focus:ring-1 focus:ring-glow-purple/40 transition-shadow font-medium resize-none"
+          />
+        </div>
+
+        {/* Submit */}
+        <motion.button
+          type="submit"
+          disabled={submitting}
+          whileHover={{ scale: 1.02, y: -2 }}
+          whileTap={{ scale: 0.97 }}
+          className="relative w-full py-3.5 font-bold text-sm rounded-2xl overflow-hidden group uppercase tracking-wider neu-raised disabled:opacity-60 disabled:cursor-not-allowed"
+          data-cursor
+        >
+          <span className="absolute inset-0 bg-gradient-to-r from-cyan-accent to-glow-purple opacity-90 group-hover:opacity-100 transition-opacity rounded-2xl" />
+          <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+          <span className="relative z-10 text-white flex items-center justify-center gap-2">
+            {submitting ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Sending…
+              </>
+            ) : (
+              <>
+                <FaPaperPlane className="text-xs" />
+                Send Message
+              </>
+            )}
+          </span>
+        </motion.button>
+      </form>
+    </RevealOnScroll>
+  );
+}
+
+export default function Contact() {
+  const { leetCodeSolved, gfgSolved, isLoading } = useCodingStats();
 
   return (
     <section
@@ -182,38 +314,44 @@ export default function Contact() {
           </p>
         </RevealOnScroll>
 
-        {/* Contact grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
-          <ContactCard
-            href="mailto:deepakraj.s2024cse@sece.ac.in"
-            icon={FaEnvelope}
-            iconColor="#00A3E0"
-            label="deepakraj.s2024cse@sece.ac.in"
-            delay={0.1}
-          />
-          <ContactCard
-            href="tel:9444308768"
-            icon={FaPhone}
-            iconColor="#10B981"
-            label="9444308768"
-            delay={0.15}
-          />
-          <ContactCard
-            href="https://github.com/Nightwing-007"
-            icon={FaGithub}
-            iconColor="var(--t-primary)"
-            label="github.com/Nightwing-007"
-            external
-            delay={0.2}
-          />
-          <ContactCard
-            href="https://www.linkedin.com/in/deepakraj-s-76392a314/"
-            icon={FaLinkedin}
-            iconColor="#0A66C2"
-            label="linkedin.com/in/deepakraj-s"
-            external
-            delay={0.25}
-          />
+        {/* Two-column: Contact info + Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-8">
+          {/* Left — Contact cards */}
+          <div className="flex flex-col gap-4 sm:gap-6">
+            <ContactCard
+              href="mailto:deepakraj.s2024cse@sece.ac.in"
+              icon={FaEnvelope}
+              iconColor="#00A3E0"
+              label="deepakraj.s2024cse@sece.ac.in"
+              delay={0.1}
+            />
+            <ContactCard
+              href="tel:9444308768"
+              icon={FaPhone}
+              iconColor="#10B981"
+              label="9444308768"
+              delay={0.15}
+            />
+            <ContactCard
+              href="https://github.com/Nightwing-007"
+              icon={FaGithub}
+              iconColor="var(--t-primary)"
+              label="github.com/Nightwing-007"
+              external
+              delay={0.2}
+            />
+            <ContactCard
+              href="https://www.linkedin.com/in/deepakraj-s-76392a314/"
+              icon={FaLinkedin}
+              iconColor="#0A66C2"
+              label="linkedin.com/in/deepakraj-s"
+              external
+              delay={0.25}
+            />
+          </div>
+
+          {/* Right — Contact Form */}
+          <ContactForm />
         </div>
 
         {/* Coding Profiles */}
@@ -229,9 +367,9 @@ export default function Contact() {
             icon={SiLeetcode}
             iconColor="#FFA116"
             platform="LeetCode"
-            count={leetcodeCount}
+            count={leetCodeSolved}
             total={500}
-            loading={loading}
+            loading={isLoading}
             href="https://leetcode.com/u/S_Deepakraj/"
             delay={0.25}
           />
@@ -239,9 +377,9 @@ export default function Contact() {
             icon={SiGeeksforgeeks}
             iconColor="#2F8D46"
             platform="GeeksforGeeks"
-            count={gfgCount}
+            count={gfgSolved}
             total={300}
-            loading={loading}
+            loading={isLoading}
             href="https://www.geeksforgeeks.org/profile/deepakraj_s"
             delay={0.3}
           />

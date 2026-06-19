@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionTemplate,
@@ -11,82 +12,7 @@ import GlitchText from "./GlitchText";
 import AnimatedBorder from "./AnimatedBorder";
 import RevealOnScroll from "./RevealOnScroll";
 import { FaTerminal, FaGithub, FaExternalLinkAlt } from "react-icons/fa";
-import {
-  SiReact,
-  SiNodedotjs,
-  SiExpress,
-  SiMongodb,
-  SiSpringboot,
-  SiPostgresql,
-  SiVite,
-} from "react-icons/si";
-
-const techIcons: Record<string, React.ComponentType<{ className?: string }>> = {
-  "React (Vite)": SiReact,
-  React: SiReact,
-  "Node.js": SiNodedotjs,
-  Express: SiExpress,
-  MongoDB: SiMongodb,
-  "Spring Boot": SiSpringboot,
-  PostgreSQL: SiPostgresql,
-  Vite: SiVite,
-};
-
-interface Project {
-  title: string;
-  tech: string[];
-  desc: string;
-  note?: string;
-  live?: string;
-  repos: { label: string; url: string }[];
-}
-
-const projects: Project[] = [
-  {
-    title: "Crave Food Blog",
-    tech: ["React (Vite)", "Spring Boot", "PostgreSQL"],
-    desc: "A full-stack food blog handling complex relational data. Deployed via Vercel (frontend), Render (backend), and Neon (database).",
-    live: "https://crave-woad.vercel.app/",
-    repos: [
-      {
-        label: "Repo",
-        url: "https://github.com/Nightwing-007/Crave-FoodBlog",
-      },
-    ],
-  },
-  {
-    title: "MERN Food Blog",
-    tech: ["React", "Node.js", "Express", "MongoDB"],
-    desc: "A full-stack food blogging platform built with the MERN stack, featuring CRUD operations, responsive design, and cloud deployment.",
-    note: "Backend spins down during inactivity",
-    live: "https://mern-food-blog-frontend.vercel.app/",
-    repos: [
-      {
-        label: "Frontend",
-        url: "https://github.com/Nightwing-007/MERN-Food-Blog-Frontend",
-      },
-      {
-        label: "Backend",
-        url: "https://github.com/Nightwing-007/MERN-Food-Blog-Backend",
-      },
-    ],
-  },
-];
-
-const notableMentions = [
-  {
-    title: "Flood Risk Prediction",
-    url: "https://github.com/Nightwing-007/Flood-Risk-Prediction-Model",
-  },
-  {
-    title: "Leetcode Wrapped",
-    url: "https://github.com/Nightwing-007/Leetcode_Wrapped",
-  },
-  {
-    title: "Complaint Management System",
-    url: "https://github.com/Nightwing-007/Complaint-Management-and-Resolution-Tracking-System",
-  },
-];
+import { projects, notableMentions, techIcons, type Project } from "@/lib/data";
 
 function ProjectCard({
   project,
@@ -105,11 +31,20 @@ function ProjectCard({
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
 
+  // Disable 3D tilt on touch / coarse-pointer devices
+  const isTouchRef = useRef(false);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    isTouchRef.current = window.matchMedia("(pointer: coarse)").matches;
+    setMounted(true);
+  }, []);
+
   function handleMouseMove({
     currentTarget,
     clientX,
     clientY,
   }: React.MouseEvent) {
+    if (isTouchRef.current) return; // skip tilt on touch devices
     const { left, top, width, height } = currentTarget.getBoundingClientRect();
     const posX = clientX - left;
     const posY = clientY - top;
@@ -120,6 +55,7 @@ function ProjectCard({
   }
 
   function handleMouseLeave() {
+    if (isTouchRef.current) return;
     x.set(0);
     y.set(0);
   }
@@ -132,12 +68,16 @@ function ProjectCard({
         <motion.div
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          whileHover={{ y: -4 }}
-          style={{
-            rotateX,
-            rotateY,
-            transformPerspective: 1000,
-          }}
+          whileHover={isTouchRef.current && mounted ? undefined : { y: -4 }}
+          style={
+            isTouchRef.current && mounted
+              ? undefined
+              : {
+                  rotateX,
+                  rotateY,
+                  transformPerspective: 1000,
+                }
+          }
           className="relative group cursor-pointer overflow-hidden rounded-2xl h-full"
           data-cursor
         >
@@ -163,7 +103,7 @@ function ProjectCard({
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-cyan-accent transition-colors"
                     onClick={(e) => e.stopPropagation()}
-                    aria-label="Live demo"
+                    aria-label={`${project.title} live demo`}
                     data-cursor
                   >
                     <FaExternalLinkAlt className="text-xs" />
@@ -177,7 +117,7 @@ function ProjectCard({
                     rel="noopener noreferrer"
                     className="w-9 h-9 rounded-full neu-pill flex items-center justify-center text-text-muted hover:text-glow-purple transition-colors"
                     onClick={(e) => e.stopPropagation()}
-                    aria-label={`${repo.label} repository`}
+                    aria-label={`${project.title} ${repo.label} repository on GitHub`}
                     title={repo.label}
                     data-cursor
                   >
@@ -270,6 +210,7 @@ export default function Projects() {
                     whileTap={{ scale: 0.98 }}
                     className="neu-raised p-5 sm:p-6 flex items-center gap-4 group transition-all duration-300 block"
                     data-cursor
+                    aria-label={`View ${mention.title} on GitHub`}
                   >
                     <div className="w-10 h-10 rounded-xl neu-concave flex items-center justify-center flex-shrink-0">
                       <FaGithub className="text-text-muted text-sm group-hover:text-glow-purple transition-colors" />
