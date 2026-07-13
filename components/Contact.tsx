@@ -8,10 +8,11 @@ import {
   FaGithub,
   FaLinkedin,
   FaChevronUp,
-  FaTrophy,
   FaPaperPlane,
+  FaCode,
 } from "react-icons/fa";
-import { SiLeetcode, SiGeeksforgeeks, SiHackerrank } from "react-icons/si";
+import { SiLeetcode, SiGeeksforgeeks, SiHackerrank, SiCodeforces, SiCodechef, SiHackerearth } from "react-icons/si";
+import { Terminal } from "lucide-react";
 import GlitchText from "./GlitchText";
 import MorphingBlob from "./MorphingBlob";
 import RevealOnScroll from "./RevealOnScroll";
@@ -58,6 +59,17 @@ function ContactCard({
   );
 }
 
+const hoverStyles: Record<string, string> = {
+  LeetCode: "dark:hover:shadow-[0_0_15px_rgba(255,161,22,0.15)] dark:hover:border-[#FFA116]/50",
+  Codeforces: "dark:hover:shadow-[0_0_15px_rgba(31,133,222,0.15)] dark:hover:border-[#1F85DE]/50",
+  GeeksforGeeks: "dark:hover:shadow-[0_0_15px_rgba(47,141,70,0.15)] dark:hover:border-[#2F8D46]/50",
+  AtCoder: "dark:hover:shadow-[0_0_15px_rgba(160,174,192,0.15)] dark:hover:border-[#A0AEC0]/50",
+  HackerRank: "dark:hover:shadow-[0_0_15px_rgba(0,234,100,0.15)] dark:hover:border-[#00EA64]/50",
+  CodeChef: "dark:hover:shadow-[0_0_15px_rgba(91,70,54,0.15)] dark:hover:border-[#5B4636]/50",
+  HackerEarth: "dark:hover:shadow-[0_0_15px_rgba(50,83,128,0.15)] dark:hover:border-[#325380]/50",
+  Skillrack: "dark:hover:shadow-[0_0_15px_rgba(255,69,0,0.15)] dark:hover:border-[#FF4500]/50",
+};
+
 function StatCard({
   icon: Icon,
   iconColor,
@@ -71,13 +83,28 @@ function StatCard({
   icon: React.ComponentType<{ className?: string }>;
   iconColor: string;
   platform: string;
-  count: number;
+  count: number | string;
   total: number;
   loading?: boolean;
   href: string;
   delay?: number;
 }) {
-  const pct = Math.min((count / total) * 100, 100);
+  const hoverClass = hoverStyles[platform] || "";
+
+  let numericCount = 0;
+  if (typeof count === "number") {
+    numericCount = count;
+  } else if (typeof count === "string") {
+    const parsed = parseInt(count.replace(/[^0-9]/g, ""), 10);
+    numericCount = isNaN(parsed) ? 0 : parsed;
+  }
+
+  const pct = Math.min((numericCount / total) * 100, 100);
+
+  const displayLabel = platform === "Codeforces" 
+    ? (count === "Unrated" ? "" : "rating") 
+    : "solved";
+  const displayText = count === "Unrated" ? "Unrated" : `${count} ${displayLabel}`;
 
   return (
     <RevealOnScroll mode="fade-up" delay={delay}>
@@ -86,7 +113,7 @@ function StatCard({
         target="_blank"
         rel="noopener noreferrer"
         whileHover={{ scale: 1.02, y: -4 }}
-        className="neu-raised p-5 sm:p-6 group transition-all duration-300 block"
+        className={`border border-transparent neu-raised p-5 sm:p-6 group transition-all duration-300 block ${hoverClass}`}
         data-cursor
         aria-label={`${platform} coding profile`}
       >
@@ -105,7 +132,7 @@ function StatCard({
                 <p className="text-text-dim text-xs font-mono">Loading...</p>
               </div>
             ) : (
-              <p className="text-text-muted text-xs">{count} solved</p>
+              <p className="text-text-muted text-xs">{displayText}</p>
             )}
           </div>
         </div>
@@ -278,7 +305,17 @@ function ContactForm() {
 }
 
 export default function Contact() {
-  const { leetCodeSolved, gfgSolved, isLoading } = useCodingStats();
+  const {
+    leetCodeSolved,
+    codeforcesRating,
+    gfgSolved,
+    atcoderSolved,
+    hackerrankSolved,
+    codechefSolved,
+    hackerearthSolved,
+    skillrackSolved,
+    isLoading,
+  } = useCodingStats();
 
   return (
     <section
@@ -374,6 +411,16 @@ export default function Contact() {
             delay={0.25}
           />
           <StatCard
+            icon={SiCodeforces}
+            iconColor="#1F85DE"
+            platform="Codeforces"
+            count={codeforcesRating}
+            total={1500}
+            loading={isLoading}
+            href="https://codeforces.com/profile/deepakraj.s2024cse"
+            delay={0.3}
+          />
+          <StatCard
             icon={SiGeeksforgeeks}
             iconColor="#2F8D46"
             platform="GeeksforGeeks"
@@ -381,27 +428,57 @@ export default function Contact() {
             total={300}
             loading={isLoading}
             href="https://www.geeksforgeeks.org/profile/deepakraj_s"
-            delay={0.3}
+            delay={0.35}
+          />
+          <StatCard
+            icon={Terminal}
+            iconColor="#A0AEC0"
+            platform="AtCoder"
+            count={atcoderSolved}
+            total={100}
+            loading={isLoading}
+            href="https://atcoder.jp/users/Deepakraj_S"
+            delay={0.4}
           />
           <StatCard
             icon={SiHackerrank}
             iconColor="#00EA64"
             platform="HackerRank"
-            count={50}
+            count={hackerrankSolved}
             total={200}
             loading={false}
             href="https://www.hackerrank.com/profile/deepakraj_s20241"
-            delay={0.35}
+            delay={0.45}
           />
           <StatCard
-            icon={FaTrophy}
-            iconColor="#10B981"
+            icon={SiCodechef}
+            iconColor="#5B4636"
+            platform="CodeChef"
+            count={codechefSolved}
+            total={1000}
+            loading={false}
+            href="https://www.codechef.com/users/deepakraj_042"
+            delay={0.5}
+          />
+          <StatCard
+            icon={SiHackerearth}
+            iconColor="#325380"
+            platform="HackerEarth"
+            count={hackerearthSolved}
+            total={100}
+            loading={false}
+            href="https://www.hackerearth.com/@deepakraj.s2024cse"
+            delay={0.55}
+          />
+          <StatCard
+            icon={FaCode}
+            iconColor="#FF4500"
             platform="Skillrack"
-            count={1279}
-            total={2000}
+            count={skillrackSolved}
+            total={1000}
             loading={false}
             href="https://www.skillrack.com/faces/resume.xhtml?id=514892&key=8b7f1a5fb7aa85472035223a779bcf00b15fad53"
-            delay={0.4}
+            delay={0.6}
           />
         </div>
 

@@ -10,7 +10,6 @@ import {
   SiMongodb,
   SiPostgresql,
   SiSpringboot,
-  SiOpencv,
   SiMysql,
   SiVite,
   SiHtml5,
@@ -61,7 +60,6 @@ export const skillCategories: SkillCategory[] = [
     label: "AI & Core CS",
     skills: [
       { name: "Python", icon: SiPython, color: "#FFD43B" },
-      { name: "OpenCV", icon: SiOpencv, color: "#5C3EE8" },
       { name: "C", icon: SiC, color: "#A8B9CC" },
       { name: "C++", icon: SiCplusplus, color: "#00599C" },
       { name: "DSA", icon: FaCode, color: "#FF6B6B" },
@@ -123,6 +121,8 @@ export const techIcons: Record<string, React.ComponentType<{ className?: string 
   "Spring Boot": SiSpringboot,
   PostgreSQL: SiPostgresql,
   Vite: SiVite,
+  Java: FaJava,
+  SQL: SiMysql,
 };
 
 export const projects: Project[] = [
@@ -139,19 +139,13 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "MERN Food Blog",
-    tech: ["React", "Node.js", "Express", "MongoDB"],
-    desc: "A full-stack food blogging platform built with the MERN stack, featuring CRUD operations, responsive design, and cloud deployment.",
-    note: "Backend spins down during inactivity",
-    live: "https://mern-food-blog-frontend.vercel.app/",
+    title: "Search-Space-2.0",
+    tech: ["React", "Java", "Spring Boot", "SQL"],
+    desc: "A full-stack algorithm visualization platform built with React and Spring Boot, featuring frontend visualizer controls, algorithm playback, and database integration for tracking algorithm runs.",
     repos: [
       {
-        label: "Frontend",
-        url: "https://github.com/Nightwing-007/MERN-Food-Blog-Frontend",
-      },
-      {
-        label: "Backend",
-        url: "https://github.com/Nightwing-007/MERN-Food-Blog-Backend",
+        label: "Repo",
+        url: "https://github.com/Nightwing-007/Search-Space-2.0",
       },
     ],
   },
@@ -175,4 +169,38 @@ export const notableMentions: NotableMention[] = [
     title: "Complaint Management System",
     url: "https://github.com/Nightwing-007/Complaint-Management-and-Resolution-Tracking-System",
   },
+];
+
+export interface Certification {
+  title: string;
+  issuer: string;
+  highlight: string;
+  link: string;
+}
+
+export const certifications: Certification[] = [
+  {
+    title: "Design Thinking - A Primer",
+    issuer: "NPTEL - IIT Madras",
+    highlight: "Elite | Top 2% Topper | 87%",
+    link: "/certificates/Design Thinking - A Primer.pdf",
+  },
+  {
+    title: "Python for Data Science",
+    issuer: "NPTEL - IIT Madras",
+    highlight: "Elite | 76%",
+    link: "/certificates/Python for Data Science.pdf",
+  },
+  {
+    title: "SQL (Intermediate)",
+    issuer: "HackerRank",
+    highlight: "Proctored Skill Assessment",
+    link: "/certificates/sql_intermediate certificate.pdf",
+  },
+  {
+    title: "Java (Basic)",
+    issuer: "HackerRank",
+    highlight: "Proctored Skill Assessment",
+    link: "/certificates/java_basic certificate.pdf",
+  }
 ];

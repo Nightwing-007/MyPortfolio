@@ -42,8 +42,10 @@ export default function TypewriterSubtitle() {
           setDisplayText(displayText.slice(0, -1));
         }, 25);
       } else {
-        setIsDeleting(false);
-        setSubtitleIndex((prev) => (prev + 1) % SUBTITLES.length);
+        timeoutRef.current = setTimeout(() => {
+          setIsDeleting(false);
+          setSubtitleIndex((prev) => (prev + 1) % SUBTITLES.length);
+        }, 0);
       }
     }
 

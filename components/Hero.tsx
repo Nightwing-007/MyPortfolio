@@ -5,7 +5,6 @@ import ScrambleText from "./ScrambleText";
 import GlowingGrid from "./GlowingGrid";
 import TypewriterSubtitle from "./TypewriterSubtitle";
 import MorphingBlob from "./MorphingBlob";
-import RevealOnScroll from "./RevealOnScroll";
 import { FaChevronDown } from "react-icons/fa";
 
 const containerVariants = {

@@ -137,7 +137,7 @@ export default function GlowingGrid() {
       cancelAnimationFrame(animFrameRef.current);
       observer.disconnect();
     };
-  }, [initCells, isMobile]);
+  }, [initCells, isMobile, CELL_SIZE]);
 
   return (
     <canvas

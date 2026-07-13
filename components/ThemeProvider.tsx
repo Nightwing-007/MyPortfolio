@@ -25,9 +25,11 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     const stored = localStorage.getItem("theme") as Theme | null;
     const initial = stored || "light";
-    setTheme(initial);
     document.documentElement.classList.toggle("dark", initial === "dark");
-    setMounted(true);
+    setTimeout(() => {
+      setTheme(initial);
+      setMounted(true);
+    }, 0);
   }, []);
 
   const toggleTheme = () => {

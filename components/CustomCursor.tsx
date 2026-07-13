@@ -31,7 +31,9 @@ export default function CustomCursor() {
 
   useEffect(() => {
     const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-    setIsTouch(!hasFinePointer);
+    setTimeout(() => {
+      setIsTouch(!hasFinePointer);
+    }, 0);
   }, []);
 
   const handleMouseMove = useCallback(

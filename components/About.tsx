@@ -5,7 +5,8 @@ import GlitchText from "./GlitchText";
 import AnimatedBorder from "./AnimatedBorder";
 import RevealOnScroll from "./RevealOnScroll";
 import { FaBriefcase, FaGraduationCap } from "react-icons/fa";
-import { skillCategories, allSkills, experiences } from "@/lib/data";
+import { ExternalLink } from "lucide-react";
+import { skillCategories, allSkills, experiences, certifications } from "@/lib/data";
 
 
 export default function About() {
@@ -82,6 +83,46 @@ export default function About() {
                     </div>
                   </div>
                 </div>
+              </AnimatedBorder>
+            ))}
+          </div>
+        </RevealOnScroll>
+
+        {/* Certifications */}
+        <RevealOnScroll mode="fade-up" delay={0.15}>
+          <GlitchText
+            text="Certifications"
+            className="text-2xl sm:text-3xl font-semibold text-text-primary mb-6"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            {certifications.map((cert, idx) => (
+              <AnimatedBorder key={idx} className="rounded-2xl h-full">
+                <a
+                  href={cert.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block h-full neu-raised dark:bg-[#0a0a0a] dark:border dark:border-white/[0.08] p-6 sm:p-8 relative group rounded-2xl"
+                  aria-label={`View certification for ${cert.title}`}
+                >
+                  <div className="flex flex-col h-full justify-between">
+                    <div>
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="text-lg sm:text-xl font-bold text-zinc-800 dark:text-zinc-100 pr-4">
+                          {cert.title}
+                        </h4>
+                        <ExternalLink className="text-text-muted group-hover:text-glow-purple transition-colors w-5 h-5 flex-shrink-0" />
+                      </div>
+                      <p className="text-zinc-600 dark:text-zinc-400 font-mono text-sm mb-4">
+                        {cert.issuer}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="inline-block px-3 py-1 text-xs font-mono text-glow-green neu-inset !rounded-full uppercase tracking-wider">
+                        {cert.highlight}
+                      </span>
+                    </div>
+                  </div>
+                </a>
               </AnimatedBorder>
             ))}
           </div>

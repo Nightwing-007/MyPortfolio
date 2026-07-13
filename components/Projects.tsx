@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   motion,
   useMotionTemplate,
@@ -32,11 +32,14 @@ function ProjectCard({
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
 
   // Disable 3D tilt on touch / coarse-pointer devices
-  const isTouchRef = useRef(false);
+  const [isTouch, setIsTouch] = useState(false);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    isTouchRef.current = window.matchMedia("(pointer: coarse)").matches;
-    setMounted(true);
+    const checkTouch = window.matchMedia("(pointer: coarse)").matches;
+    setTimeout(() => {
+      setIsTouch(checkTouch);
+      setMounted(true);
+    }, 0);
   }, []);
 
   function handleMouseMove({
@@ -44,7 +47,7 @@ function ProjectCard({
     clientX,
     clientY,
   }: React.MouseEvent) {
-    if (isTouchRef.current) return; // skip tilt on touch devices
+    if (isTouch) return; // skip tilt on touch devices
     const { left, top, width, height } = currentTarget.getBoundingClientRect();
     const posX = clientX - left;
     const posY = clientY - top;
@@ -55,7 +58,7 @@ function ProjectCard({
   }
 
   function handleMouseLeave() {
-    if (isTouchRef.current) return;
+    if (isTouch) return;
     x.set(0);
     y.set(0);
   }
@@ -68,9 +71,9 @@ function ProjectCard({
         <motion.div
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          whileHover={isTouchRef.current && mounted ? undefined : { y: -4 }}
+          whileHover={isTouch && mounted ? undefined : { y: -4 }}
           style={
-            isTouchRef.current && mounted
+            isTouch && mounted
               ? undefined
               : {
                   rotateX,
