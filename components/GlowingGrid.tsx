@@ -17,7 +17,8 @@ export default function GlowingGrid() {
   const [isMobile, setIsMobile] = useState(false);
   const timeRef = useRef(0);
 
-  const CELL_SIZE = 60;
+  // Larger cells on mobile = fewer draw calls
+  const CELL_SIZE = typeof window !== 'undefined' && window.innerWidth < 768 ? 90 : 60;
   const GLOW_RADIUS = 200;
 
   const initCells = useCallback(

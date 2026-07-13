@@ -76,7 +76,7 @@ export default function Hero() {
         {/* Name */}
         <motion.h1
           variants={itemVariants}
-          className="text-5xl sm:text-6xl md:text-8xl font-bold mb-6 tracking-tight text-text-primary"
+          className="text-4xl sm:text-5xl md:text-8xl font-bold mb-6 tracking-tight text-text-primary"
         >
           <ScrambleText text="Deepakraj S" />
         </motion.h1>
@@ -97,7 +97,7 @@ export default function Hero() {
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             data-cursor
-            className="relative px-8 py-4 font-bold text-sm sm:text-base rounded-2xl overflow-hidden group uppercase tracking-wider neu-raised"
+            className="relative px-6 sm:px-8 py-4 min-h-[44px] font-bold text-sm sm:text-base rounded-2xl overflow-hidden group uppercase tracking-wider neu-raised"
             aria-label="View projects section"
           >
             <span className="absolute inset-0 bg-gradient-to-r from-cyan-accent to-glow-purple opacity-90 group-hover:opacity-100 transition-opacity rounded-2xl" />
@@ -116,7 +116,7 @@ export default function Hero() {
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             data-cursor
-            className="px-8 py-4 font-bold text-sm sm:text-base rounded-2xl neu-flat text-text-primary uppercase tracking-wider hover:text-glow-purple transition-colors duration-300"
+            className="px-6 sm:px-8 py-4 min-h-[44px] font-bold text-sm sm:text-base rounded-2xl neu-flat text-text-primary uppercase tracking-wider hover:text-glow-purple transition-colors duration-300"
             aria-label="Go to contact section"
           >
             Get In Touch
@@ -130,7 +130,7 @@ export default function Hero() {
             whileHover={{ scale: 1.03, y: -2 }}
             whileTap={{ scale: 0.97 }}
             data-cursor
-            className="px-8 py-4 font-bold text-sm sm:text-base rounded-2xl neu-flat text-text-primary uppercase tracking-wider hover:text-glow-purple transition-colors duration-300 flex items-center gap-2"
+            className="px-6 sm:px-8 py-4 min-h-[44px] font-bold text-sm sm:text-base rounded-2xl neu-flat text-text-primary uppercase tracking-wider hover:text-glow-purple transition-colors duration-300 flex items-center gap-2"
             aria-label="Download resume PDF"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

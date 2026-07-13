@@ -21,7 +21,7 @@ export default function MorphingBlob({
 }: MorphingBlobProps) {
   return (
     <motion.div
-      className={`absolute pointer-events-none z-0 ${className}`}
+      className={`absolute pointer-events-none z-0 hidden md:block ${className}`}
       animate={{
         scale: [1, 1.05, 0.95, 1],
         rotate: [0, 5, -3, 0],

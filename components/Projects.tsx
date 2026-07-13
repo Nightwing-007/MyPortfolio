@@ -176,7 +176,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="relative py-24 px-4 md:px-12 bg-bg-base z-[2]"
+      className="relative py-16 sm:py-24 px-4 md:px-12 bg-bg-base z-[2]"
     >
       <div className="max-w-6xl mx-auto">
         <RevealOnScroll mode="fade-up">
@@ -194,7 +194,7 @@ export default function Projects() {
 
         {/* Notable Mentions */}
         <RevealOnScroll mode="fade-up" delay={0.3}>
-          <div className="mt-16">
+          <div className="mt-10 sm:mt-16">
             <GlitchText
               text="Notable Mentions"
               className="text-2xl sm:text-3xl font-semibold text-text-primary mb-8"

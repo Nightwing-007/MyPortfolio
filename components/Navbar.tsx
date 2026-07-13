@@ -155,7 +155,7 @@ export default function Navbar() {
             <motion.button
               onClick={toggleTheme}
               whileTap={{ scale: 0.9 }}
-              className="w-9 h-9 rounded-full neu-pill flex items-center justify-center text-text-muted z-[60]"
+              className="w-10 h-10 rounded-full neu-pill flex items-center justify-center text-text-muted z-[60]"
               data-cursor
               aria-label="Toggle theme"
             >
@@ -164,7 +164,7 @@ export default function Navbar() {
 
             {/* Hamburger */}
             <button
-              className="relative z-[60] w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+              className="relative z-[60] w-11 h-11 flex flex-col items-center justify-center gap-1.5"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
               data-cursor

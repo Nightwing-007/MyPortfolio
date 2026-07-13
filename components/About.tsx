@@ -12,9 +12,9 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative py-24 px-4 md:px-12 bg-bg-base z-[2]"
+      className="relative py-16 sm:py-24 px-4 md:px-12 bg-bg-base z-[2]"
     >
-      <div className="max-w-6xl mx-auto flex flex-col gap-16">
+      <div className="max-w-6xl mx-auto flex flex-col gap-10 sm:gap-16">
         {/* About Me */}
         <RevealOnScroll mode="fade-up">
           <GlitchText

@@ -72,7 +72,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${spaceGrotesk.className} min-h-full flex flex-col antialiased bg-bg-base text-text-primary`}>
+      <body className={`${spaceGrotesk.className} min-h-full flex flex-col antialiased bg-bg-base text-text-primary overflow-x-hidden`}>
         <ThemeProvider>
           {children}
         </ThemeProvider>

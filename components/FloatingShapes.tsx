@@ -66,7 +66,7 @@ function ShapeSVG({ type, size, color }: { type: Shape["type"]; size: number; co
 
 export default function FloatingShapes() {
   return (
-    <div className="fixed inset-0 z-[0] pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-[0] pointer-events-none overflow-hidden hidden md:block">
       {shapes.map((shape, i) => (
         <motion.div
           key={i}

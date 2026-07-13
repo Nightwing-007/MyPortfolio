@@ -283,7 +283,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative py-24 px-4 md:px-12 bg-bg-base z-[2] overflow-hidden"
+      className="relative py-16 sm:py-24 px-4 md:px-12 bg-bg-base z-[2] overflow-hidden"
     >
       {/* Blob behind section */}
       <MorphingBlob
@@ -309,7 +309,7 @@ export default function Contact() {
         </RevealOnScroll>
 
         <RevealOnScroll mode="fade-up" delay={0.1}>
-          <p className="text-center text-text-muted mb-12 text-base sm:text-lg">
+          <p className="text-center text-text-muted mb-8 sm:mb-12 text-base sm:text-lg">
             Let&apos;s build something amazing together.
           </p>
         </RevealOnScroll>
@@ -362,7 +362,7 @@ export default function Contact() {
           />
         </RevealOnScroll>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-10 sm:mb-16">
           <StatCard
             icon={SiLeetcode}
             iconColor="#FFA116"
