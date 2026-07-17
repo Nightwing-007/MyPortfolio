@@ -20,7 +20,7 @@ export default function CustomCursor() {
   const [clickBursts, setClickBursts] = useState<{ id: number; x: number; y: number }[]>([]);
   const particleId = useRef(0);
   const burstId = useRef(0);
-  const lastPos = useRef({ x: 0, y: 0 });
+  const lastPos = useRef({ x: 0, y: 0, time: 0 });
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -43,19 +43,24 @@ export default function CustomCursor() {
 
       const dx = e.clientX - lastPos.current.x;
       const dy = e.clientY - lastPos.current.y;
-      const speed = Math.sqrt(dx * dx + dy * dy);
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const now = Date.now();
 
-      if (speed > 6) {
+      // Throttle particle generation by distance and time to reduce re-renders
+      if (dist > 12 && now - lastPos.current.time > 30) {
         const newParticle: Particle = {
           id: particleId.current++,
           x: e.clientX,
           y: e.clientY,
           color: ACCENT_COLORS[Math.floor(Math.random() * ACCENT_COLORS.length)],
         };
-        setParticles((prev) => [...prev.slice(-20), newParticle]);
+        // Reduce max particles to 12
+        setParticles((prev) => [...prev.slice(-12), newParticle]);
+        lastPos.current = { x: e.clientX, y: e.clientY, time: now };
+      } else if (dist > 12) {
+        // Update position without spawning particle to keep distance tracking accurate
+        lastPos.current = { x: e.clientX, y: e.clientY, time: lastPos.current.time };
       }
-
-      lastPos.current = { x: e.clientX, y: e.clientY };
     },
     [cursorX, cursorY]
   );

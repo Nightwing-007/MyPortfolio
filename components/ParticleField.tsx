@@ -72,6 +72,11 @@ export default function ParticleField() {
     }
 
     const draw = () => {
+      if (document.hidden) {
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const mx = mouseRef.current.x;
       const my = mouseRef.current.y;

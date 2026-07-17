@@ -1,14 +1,16 @@
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
-import NoiseOverlay from "@/components/NoiseOverlay";
 import ScrollProgress from "@/components/ScrollProgress";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
-import CustomCursor from "@/components/CustomCursor";
-import ParticleField from "@/components/ParticleField";
-import FloatingShapes from "@/components/FloatingShapes";
 import SectionDivider from "@/components/SectionDivider";
+
+const NoiseOverlay = dynamic(() => import("@/components/NoiseOverlay"), { ssr: false });
+const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
+const ParticleField = dynamic(() => import("@/components/ParticleField"), { ssr: false });
+const FloatingShapes = dynamic(() => import("@/components/FloatingShapes"), { ssr: false });
 
 export default function Home() {
   return (
