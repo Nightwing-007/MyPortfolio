@@ -19,6 +19,12 @@ const COLORS = [
   "rgba(16, 185, 129,",  // green
 ];
 
+// Squared distance threshold to avoid Math.sqrt in hot path
+const MOUSE_RADIUS = 100;
+const MOUSE_RADIUS_SQ = MOUSE_RADIUS * MOUSE_RADIUS;
+const CONN_RADIUS = 130;
+const CONN_RADIUS_SQ = CONN_RADIUS * CONN_RADIUS;
+
 export default function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouseRef = useRef({ x: -1, y: -1 });
@@ -32,6 +38,9 @@ export default function ParticleField() {
     if (!ctx) return;
 
     const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+
+    // Frame throttle: draw every 2nd frame (~30fps)
+    let frameCount = 0;
 
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -72,7 +81,16 @@ export default function ParticleField() {
     }
 
     const draw = () => {
+      frameCount++;
+
+      // Skip rendering on hidden tab
       if (document.hidden) {
+        animRef.current = requestAnimationFrame(draw);
+        return;
+      }
+
+      // Throttle to ~30fps: only draw every 2nd frame
+      if (frameCount % 2 !== 0) {
         animRef.current = requestAnimationFrame(draw);
         return;
       }
@@ -82,13 +100,14 @@ export default function ParticleField() {
       const my = mouseRef.current.y;
 
       for (const p of particlesRef.current) {
-        // Mouse interaction only on desktop
+        // Mouse interaction only on desktop — use squared distance
         if (!isMobile && mx >= 0) {
           const dx = p.x - mx;
           const dy = p.y - my;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100 && dist > 0) {
-            const force = (100 - dist) / 100;
+          const distSq = dx * dx + dy * dy;
+          if (distSq < MOUSE_RADIUS_SQ && distSq > 0) {
+            const dist = Math.sqrt(distSq);
+            const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
             p.vx += (dx / dist) * force * 0.12;
             p.vy += (dy / dist) * force * 0.12;
             p.opacity = Math.min(0.4, p.baseOpacity + force * 0.2);
@@ -126,6 +145,7 @@ export default function ParticleField() {
       }
 
       // Faint connections — skip entirely on mobile (O(n²) is expensive)
+      // Use squared distance to avoid sqrt in inner loop
       if (!isMobile) {
         for (let i = 0; i < particlesRef.current.length; i++) {
           for (let j = i + 1; j < particlesRef.current.length; j++) {
@@ -133,9 +153,10 @@ export default function ParticleField() {
             const b = particlesRef.current[j];
             const dx = a.x - b.x;
             const dy = a.y - b.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 130) {
-              const lineOpacity = (1 - dist / 130) * 0.04;
+            const distSq = dx * dx + dy * dy;
+            if (distSq < CONN_RADIUS_SQ) {
+              const dist = Math.sqrt(distSq);
+              const lineOpacity = (1 - dist / CONN_RADIUS) * 0.04;
               ctx.beginPath();
               ctx.moveTo(a.x, a.y);
               ctx.lineTo(b.x, b.y);

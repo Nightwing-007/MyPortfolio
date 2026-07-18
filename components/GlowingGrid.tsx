@@ -50,6 +50,9 @@ export default function GlowingGrid() {
     const mobile = !window.matchMedia("(hover: hover)").matches;
     setIsMobile(mobile);
 
+    // Frame throttle: draw every 2nd frame (~30fps)
+    let frameCount = 0;
+
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -73,7 +76,15 @@ export default function GlowingGrid() {
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
     const draw = () => {
-      timeRef.current += 0.005;
+      frameCount++;
+
+      // Throttle to ~30fps: only draw every 2nd frame
+      if (frameCount % 2 !== 0) {
+        animFrameRef.current = requestAnimationFrame(draw);
+        return;
+      }
+
+      timeRef.current += 0.01; // Adjusted for 30fps (doubled increment)
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const cells = cellsRef.current;
@@ -110,21 +121,19 @@ export default function GlowingGrid() {
         }
       }
 
-      // Base grid — theme-adaptive lines (color cached, updated via MutationObserver)
+      // Base grid — batch all lines into a single path for fewer draw calls
+      ctx.beginPath();
       ctx.strokeStyle = gridLineColor;
       ctx.lineWidth = 0.5;
       for (let x = 0; x <= canvas.width; x += CELL_SIZE) {
-        ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
-        ctx.stroke();
       }
       for (let y = 0; y <= canvas.height; y += CELL_SIZE) {
-        ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(canvas.width, y);
-        ctx.stroke();
       }
+      ctx.stroke();
 
       animFrameRef.current = requestAnimationFrame(draw);
     };

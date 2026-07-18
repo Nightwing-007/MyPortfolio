@@ -47,17 +47,17 @@ export default function CustomCursor() {
       const now = Date.now();
 
       // Throttle particle generation by distance and time to reduce re-renders
-      if (dist > 12 && now - lastPos.current.time > 30) {
+      if (dist > 18 && now - lastPos.current.time > 30) {
         const newParticle: Particle = {
           id: particleId.current++,
           x: e.clientX,
           y: e.clientY,
           color: ACCENT_COLORS[Math.floor(Math.random() * ACCENT_COLORS.length)],
         };
-        // Reduce max particles to 12
-        setParticles((prev) => [...prev.slice(-12), newParticle]);
+        // Reduce max particles to 8
+        setParticles((prev) => [...prev.slice(-8), newParticle]);
         lastPos.current = { x: e.clientX, y: e.clientY, time: now };
-      } else if (dist > 12) {
+      } else if (dist > 18) {
         // Update position without spawning particle to keep distance tracking accurate
         lastPos.current = { x: e.clientX, y: e.clientY, time: lastPos.current.time };
       }
@@ -158,6 +158,7 @@ export default function CustomCursor() {
           translateX: "-50%",
           translateY: "-50%",
           boxShadow: `0 0 12px ${ringColor}, 0 0 24px ${ringColor}`,
+          willChange: "transform",
         }}
         animate={{
           width: dotSize,
@@ -177,6 +178,7 @@ export default function CustomCursor() {
           translateY: "-50%",
           border: `2px solid ${ringColor}`,
           backdropFilter: "blur(1px)",
+          willChange: "transform",
         }}
         animate={{
           width: ringSize,

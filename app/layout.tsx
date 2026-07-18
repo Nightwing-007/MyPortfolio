@@ -1,23 +1,33 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, Fira_Code } from "next/font/google";
 import "./globals.css";
 import ThemeProvider from "@/components/ThemeProvider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "700"],
   display: "swap",
   variable: "--font-space-grotesk",
 });
 
 const firaCode = Fira_Code({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500"],
   display: "swap",
   variable: "--font-fira-code",
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#e0dbd5" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e0e0e" },
+  ],
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL("https://deepakraj-s.vercel.app"),
   title: "Deepakraj S — Portfolio",
   description:
     "Computer Science student & Full-Stack Developer. Explore projects in full-stack development, computer vision, and more.",

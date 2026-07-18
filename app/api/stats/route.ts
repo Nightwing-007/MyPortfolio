@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 
+// ISR-style caching: Vercel will cache this route's response for 1 hour
+export const revalidate = 3600;
+
 export async function GET() {
   const results: {
     leetcode: number | null;
@@ -16,7 +19,7 @@ export async function GET() {
   try {
     const [lcRes, cfRes, gfgRes, acRes] = await Promise.allSettled([
       fetch("https://leetcode-stats-api.herokuapp.com/S_Deepakraj", {
-        next: { revalidate: 3600 }, // cache for 1 hour
+        next: { revalidate: 3600 },
       }),
       fetch("https://codeforces.com/api/user.info?handles=deepakraj.s2024cse", {
         next: { revalidate: 3600 },
@@ -81,5 +84,10 @@ export async function GET() {
     console.error("Error fetching stats:", error);
   }
 
-  return NextResponse.json(results);
+  // Cache-Control header for Vercel CDN edge caching
+  return NextResponse.json(results, {
+    headers: {
+      "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=1800",
+    },
+  });
 }

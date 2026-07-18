@@ -14,6 +14,7 @@ export default function ScrollProgress() {
         background: "linear-gradient(90deg, #00A3E0, #7C3AED, #10B981)",
         boxShadow:
           "0 0 8px rgba(0, 163, 224, 0.3), 0 0 16px rgba(124, 58, 237, 0.15)",
+        willChange: "transform",
       }}
     />
   );

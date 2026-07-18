@@ -71,7 +71,7 @@ export default function FloatingShapes() {
         <motion.div
           key={i}
           className="absolute"
-          style={{ left: shape.x, top: shape.y }}
+          style={{ left: shape.x, top: shape.y, willChange: "transform" }}
           animate={{
             y: [0, -20, 0],
             rotate: [shape.rotation, shape.rotation + 360],
